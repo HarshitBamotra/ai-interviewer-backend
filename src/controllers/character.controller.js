@@ -75,11 +75,43 @@ async function deleteCharacter(req, res, next){
     }
 }
 
+async function getChatHistory(req, res, next){
+    try{
+        const chats = await characterService.getChatHistory(req.params.characterId);
+        return res.status(StatusCodes.OK).json({
+            success: true,
+            message: "Chats Fetched Successfully",
+            err:{},
+            data: chats
+        });
+    }
+    catch(err){
+        next(err);
+    }
+}
+
+async function sendMessage(req, res, next){
+    try{
+        const response = await characterService.sendMessage(req.body.message, req.params.characterId, req.user._id);
+        return res.status(StatusCodes.OK).json({
+            success: true,
+            message: "Received response successfully",
+            err:{},
+            data: response
+        });
+    }
+    catch(err){
+        next(err);
+    }
+}
+
 
 module.exports = {
     pingCharacterController,
     createCharacter,
     getCharacter,
     getCharacters,
-    deleteCharacter
+    deleteCharacter,
+    getChatHistory,
+    sendMessage
 }

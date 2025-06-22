@@ -10,5 +10,7 @@ characterRouter.post("/character", authenticate, characterController.createChara
 characterRouter.get("/character", authenticate, characterController.getCharacters);
 characterRouter.get("/character/:id", authenticate, characterController.getCharacter);
 characterRouter.delete("/character/:id", authenticate, characterController.deleteCharacter);
+characterRouter.get("/chat/:characterId/history", authenticate, characterController.getChatHistory);
+characterRouter.post("/chat/:characterId", authenticate, characterController.sendMessage);
 
 module.exports = characterRouter;

@@ -46,6 +46,29 @@ class CharacterService {
             throw err;
         }
     }
+
+    async getChatHistory(characterId){
+        try{
+            const chats = await this.characterRepo.getChatHistory(characterId);
+            return chats;
+        }
+        catch(err){
+            console.log(err);
+            throw err;
+        }
+    }
+
+    async sendMessage(message, characterId, userId){
+        try{
+            const response = await this.characterRepo.sendMessage(message, characterId, userId);
+            return response;
+        }
+        catch(err){
+            console.log(err);
+            throw err;
+        }
+
+    }
 }
 
 module.exports = CharacterService;
