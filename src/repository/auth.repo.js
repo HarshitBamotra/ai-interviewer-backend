@@ -61,6 +61,38 @@ class AuthRepo {
             throw new InternalServerError(error.message);
         }
     }
+    
+    async login(userData) {
+        try {
+            const { email, password } = userData;
+
+            const user = await User.findOne({ email });
+            if (!user) {
+                return { userNotFound: true };
+            }
+
+            const isMatch = await user.comparePassword(password);
+            if (!isMatch) {
+                return { invalidPassword: true };
+            }
+
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+
+            return {
+                token,
+                user: {
+                    id: user._id,
+                    username: user.username,
+                    email: user.email
+                }
+            };
+        } catch (error) {
+            console.log(error);
+            throw new InternalServerError(error.message);
+        }
+    }
 }
+
+
 
 module.exports = AuthRepo;

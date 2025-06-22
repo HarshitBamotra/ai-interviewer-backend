@@ -13,6 +13,17 @@ class AuthService{
             throw err;
         }
     }
+
+    async login(userData){
+        try{
+            const result = await this.AuthRepo.login(userData);
+            return result;
+        }
+        catch(err){
+            console.log(err);
+            throw err;
+        }
+    }
 }
 
 module.exports = AuthService;
