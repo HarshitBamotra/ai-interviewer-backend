@@ -3,6 +3,7 @@ const {StatusCodes} = require("http-status-codes");
 
 
 function errorHandler(err, req, res, next){
+    console.log(err);
     if(err instanceof BaseError){
         return res.status(err.statusCode).json({
             success: false,
