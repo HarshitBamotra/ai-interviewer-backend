@@ -61,7 +61,7 @@ class AuthRepo {
             throw new InternalServerError(error.message);
         }
     }
-    
+
     async login(userData) {
         try {
             const { email, password } = userData;
@@ -91,8 +91,24 @@ class AuthRepo {
             throw new InternalServerError(error.message);
         }
     }
+
+    async updateUser(userId, userData){
+        try{
+            const {username, profileImage} = userData;
+            
+            const user = await User.findByIdAndUpdate(userId, {username, profileImage}, {new: true});
+
+            if(!user){
+                throw new NotFound("User", userId);
+            }
+
+            return user;
+        }
+        catch(err){
+            console.log(err);
+            throw new InternalServerError(err.message);
+        }
+    }
 }
-
-
 
 module.exports = AuthRepo;

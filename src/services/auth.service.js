@@ -24,6 +24,17 @@ class AuthService{
             throw err;
         }
     }
+
+    async updateUser(userId, userData){
+        try{
+            const response = await this.AuthRepo.updateUser(userId, userData);
+            return response;
+        }
+        catch(err){
+            console.log(err);
+            throw err;
+        }
+    }
 }
 
 module.exports = AuthService;
