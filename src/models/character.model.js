@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const CharacterSchema = new mongoose.Schema({
     companyName: String,
-    interViewRound: String,
+    interviewRound: String,
     additionalInformation: String,
     systemPrompt: String,
     user: {
