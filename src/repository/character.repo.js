@@ -53,6 +53,21 @@ class CharacterRepo{
         }
     }
 
+    async deleteCharacter(id){
+        try{
+            const response = await Character.findByIdAndDelete(id);
+
+            if(!response){
+                throw new NotFoundError("Character", id);
+            }
+            return response;
+        }
+        catch(err){
+            console.log(err);
+            throw err;
+        }
+    }
+
 }
 
 module.exports = CharacterRepo;

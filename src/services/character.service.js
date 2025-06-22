@@ -35,6 +35,17 @@ class CharacterService {
             throw err;
         }
     }
+
+    async deleteCharacter(characterId){
+        try{
+            const response = await this.characterRepo.deleteCharacter(characterId);
+            return response;
+        }
+        catch(err){
+            console.log(err);
+            throw err;
+        }
+    }
 }
 
 module.exports = CharacterService;

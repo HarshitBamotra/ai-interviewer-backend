@@ -60,11 +60,26 @@ async function getCharacters(req, res, next){
     }
 }
 
+async function deleteCharacter(req, res, next){
+    try{
+        const character = await characterService.deleteCharacter(req.params.id);
+        return res.status(StatusCodes.OK).json({
+            success: true,
+            message: "Character Deleted Successfully",
+            err:{},
+            data: character
+        });
+    }
+    catch(err){
+        next(err);
+    }
+}
 
 
 module.exports = {
     pingCharacterController,
     createCharacter,
     getCharacter,
-    getCharacters
+    getCharacters,
+    deleteCharacter
 }

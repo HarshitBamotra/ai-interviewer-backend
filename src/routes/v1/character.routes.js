@@ -9,5 +9,6 @@ characterRouter.get("/ping", characterController.pingCharacterController);
 characterRouter.post("/character", authenticate, characterController.createCharacter);
 characterRouter.get("/character", authenticate, characterController.getCharacters);
 characterRouter.get("/character/:id", authenticate, characterController.getCharacter);
+characterRouter.delete("/character/:id", authenticate, characterController.deleteCharacter);
 
 module.exports = characterRouter;
