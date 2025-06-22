@@ -29,8 +29,42 @@ async function createCharacter(req, res, next){
     }
 }
 
+async function getCharacter(req, res, next){
+    try{
+        const character = await characterService.getCharacter(req.params.id);
+        return res.status(StatusCodes.OK).json({
+            success: true,
+            message: "Character Fetched Successfully",
+            err:{},
+            data: character
+        });
+    }
+    catch(err){
+        next(err);
+    }
+}
+
+async function getCharacters(req, res, next){
+    try{
+        const characters = await characterService.getCharacters(req.user._id);
+        return res.status(StatusCodes.OK).json({
+            success: true,
+            message: "Characters Fetched Successfully",
+            err:{},
+            data: characters
+        });
+        
+    }
+    catch(err){
+        next(err);
+    }
+}
+
+
 
 module.exports = {
     pingCharacterController,
     createCharacter,
+    getCharacter,
+    getCharacters
 }

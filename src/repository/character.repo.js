@@ -26,6 +26,33 @@ class CharacterRepo{
         }
     }
 
+    async getCharacters(userId){
+        try{
+            const characters = await Character.find({user: userId});
+            return characters;
+        }
+        catch(err){
+            console.log(err);
+            throw err;
+        }
+    }
+
+    async getCharacter(id){
+        try{
+            const character = await Character.findById(id);
+
+            if(!character){
+                throw new NotFoundError("Character", id);
+            }
+
+            return character;
+        }
+        catch(err){
+            console.log(err);
+            throw err;
+        }
+    }
+
 }
 
 module.exports = CharacterRepo;

@@ -13,6 +13,28 @@ class CharacterService {
             throw err;
         }
     }
+
+    async getCharacters(userId){
+        try{
+            const characters  = await this.characterRepo.getCharacters(userId);
+            return characters;
+        }
+        catch(err){
+            console.log(err);
+            throw err;
+        }
+    }
+
+    async getCharacter(characterId){
+        try{
+            const character = await this.characterRepo.getCharacter(characterId);
+            return character;
+        }
+        catch(err){
+            console.log(err);
+            throw err;
+        }
+    }
 }
 
 module.exports = CharacterService;

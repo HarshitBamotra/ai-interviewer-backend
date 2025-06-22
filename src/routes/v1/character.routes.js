@@ -7,5 +7,7 @@ const characterRouter = express.Router();
 
 characterRouter.get("/ping", characterController.pingCharacterController);
 characterRouter.post("/character", authenticate, characterController.createCharacter);
+characterRouter.get("/character", authenticate, characterController.getCharacters);
+characterRouter.get("/character/:id", authenticate, characterController.getCharacter);
 
 module.exports = characterRouter;
