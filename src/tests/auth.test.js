@@ -127,3 +127,68 @@ describe('Auth Registration Tests', () => {
 
   });
 });
+
+
+describe('Auth Login Tests', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe('POST /api/v1/auth/login', () => {
+    const validUserData = {
+      username: 'testuser',
+      email: 'test@example.com',
+      password: 'password123'
+    };
+
+    test('should login user successfully', async () => {
+      const existingUser = new User(validUserData);
+      await existingUser.save();
+      
+      const response = await request(app)
+        .post('/api/v1/auth/login')
+        .send({
+          email: 'test@example.com',
+          password: 'password123',
+        })
+        .expect(200);
+
+      expect(response.body).toHaveProperty("data");
+      expect(response.body.data).toHaveProperty('token');
+      expect(response.body.data).toHaveProperty('user');
+      expect(response.body.data.user).toHaveProperty("username");
+      expect(response.body.data.user.email).toBe(validUserData.email);
+      expect(response.body.data.user).not.toHaveProperty('password');
+    });
+
+    test('should not login when invalid email provided', async () => {
+      const existingUser = new User(validUserData);
+      await existingUser.save();
+      
+      const response = await request(app)
+        .post('/api/v1/auth/login')
+        .send({
+          email: 'test1@example.com',
+          password: 'password123',
+        })
+        .expect(400);
+
+      expect(response.body.success).toBe(false);
+    });
+
+    test('should not login when wrong password provided', async () => {
+      const existingUser = new User(validUserData);
+      await existingUser.save();
+      
+      const response = await request(app)
+        .post('/api/v1/auth/login')
+        .send({
+          email: 'test@example.com',
+          password: 'password1234',
+        })
+        .expect(400);
+
+      expect(response.body.success).toBe(false);
+    });
+  });
+});
