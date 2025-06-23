@@ -84,8 +84,6 @@ describe('Auth Registration Tests', () => {
 
     describe('JWT Token Tests', () => {
       test('should generate valid JWT token', async () => {
-        process.env.JWT_SECRET = 'test-secret';
-
         const response = await request(app)
           .post('/api/v1/auth/register')
           .send({
@@ -144,7 +142,7 @@ describe('Auth Login Tests', () => {
     test('should login user successfully', async () => {
       const existingUser = new User(validUserData);
       await existingUser.save();
-      
+
       const response = await request(app)
         .post('/api/v1/auth/login')
         .send({
@@ -164,7 +162,7 @@ describe('Auth Login Tests', () => {
     test('should not login when invalid email provided', async () => {
       const existingUser = new User(validUserData);
       await existingUser.save();
-      
+
       const response = await request(app)
         .post('/api/v1/auth/login')
         .send({
@@ -179,7 +177,7 @@ describe('Auth Login Tests', () => {
     test('should not login when wrong password provided', async () => {
       const existingUser = new User(validUserData);
       await existingUser.save();
-      
+
       const response = await request(app)
         .post('/api/v1/auth/login')
         .send({
@@ -189,6 +187,98 @@ describe('Auth Login Tests', () => {
         .expect(400);
 
       expect(response.body.success).toBe(false);
+    });
+  });
+});
+
+
+describe('Update User Tests', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe('PUT /api/v1/auth/me', () => {
+
+    test('should update user successfully', async () => {
+      const registerRes = await request(app)
+        .post('/api/v1/auth/register')
+        .send({
+          username: 'testuser',
+          email: 'test@example.com',
+          password: 'password123'
+        })
+        .expect(201);
+
+      const token = registerRes.body.data.token;
+
+      const res = await request(app)
+        .put('/api/v1/auth/me')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ username: "updatedUsername", mockFile:true })
+        .expect(201);
+
+      expect(res.body.data.username).toBe("updatedUsername");
+    });
+
+    test('should update only profile image', async () => {
+      const registerRes = await request(app)
+        .post('/api/v1/auth/register')
+        .send({
+          username: 'testuser',
+          email: 'test@example.com',
+          password: 'password123'
+        })
+        .expect(201);
+
+      const token = registerRes.body.data.token;
+
+      const res = await request(app)
+        .put('/api/v1/auth/me')
+        .set('Authorization', `Bearer ${token}`)
+        .send({mockFile:true})
+        .expect(201);
+
+      expect(res.body.data.profileImage).toBeDefined();
+    });
+
+    test('should update username only', async () => {
+      const registerRes = await request(app)
+        .post('/api/v1/auth/register')
+        .send({
+          username: 'testuser',
+          email: 'test@example.com',
+          password: 'password123'
+        })
+        .expect(201);
+
+      const token = registerRes.body.data.token;
+
+      const res = await request(app)
+        .put('/api/v1/auth/me')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ username: "updatedUsername"})
+        .expect(201);
+
+      expect(res.body.data.username).toBe("updatedUsername");
+    });
+
+    test('should show unauthorized user', async () => {
+      const registerRes = await request(app)
+        .post('/api/v1/auth/register')
+        .send({
+          username: 'testuser',
+          email: 'test@example.com',
+          password: 'password123'
+        })
+        .expect(201);
+
+      const token = registerRes.body.data.token;
+
+      const res = await request(app)
+        .put('/api/v1/auth/me')
+        .set('Authorization', `Bearer ${token}1`)
+        .send({ username: "updatedUsername"})
+        .expect(401);
     });
   });
 });
