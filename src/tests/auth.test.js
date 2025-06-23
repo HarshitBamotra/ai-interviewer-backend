@@ -282,3 +282,51 @@ describe('Update User Tests', () => {
     });
   });
 });
+
+describe('Fetch User Tests', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe('GET /api/v1/auth/me', () => {
+
+    test('should update user successfully', async () => {
+      const registerRes = await request(app)
+        .post('/api/v1/auth/register')
+        .send({
+          username: 'testuser',
+          email: 'test@example.com',
+          password: 'password123'
+        })
+        .expect(201);
+
+      const token = registerRes.body.data.token;
+
+      const res = await request(app)
+        .get('/api/v1/auth/me')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200);
+
+      expect(res.body.data.username).toBe("testuser");
+      expect(res.body.data.email).toBe("test@example.com");
+    });
+
+    test('should show unauthorized user', async () => {
+      const registerRes = await request(app)
+        .post('/api/v1/auth/register')
+        .send({
+          username: 'testuser',
+          email: 'test@example.com',
+          password: 'password123'
+        })
+        .expect(201);
+
+      const token = registerRes.body.data.token;
+
+      await request(app)
+        .get('/api/v1/auth/me')
+        .set('Authorization', `Bearer ${token}1`)
+        .expect(401);
+    });
+  });
+});
