@@ -1,31 +1,39 @@
-const express = require("express");
-const bodyParser = require('body-parser');
-const cors = require("cors");
-
+const app = require('./app');
 const connectToDB = require("./config/db.config");
-const apiRouter = require("./routes")
-const errorHandler = require("./utils/errorHandler");
-const {PORT} = require("./config/server.config");
+const { PORT } = require("./config/server.config");
 
-const app = express();
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true})); 
-app.use(bodyParser.text());
-app.use(cors({
-    origin: "*"
-}));
-
-app.use("/api", apiRouter);
-app.use(errorHandler);
-
-app.get('/ping', (req, res)=>{
-    return res.json({
-        msg: "Server is up and running"
+const startServer = async () => {
+  try {
+    await connectToDB();
+    
+    const server = app.listen(PORT, () => {
+      console.log(`Server listening on port ${PORT}`);
     });
-});
 
-app.listen(PORT, ()=>{
-    console.log(`server listening on port ${PORT}`);
-    connectToDB();
-})
+    process.on('SIGTERM', () => {
+      console.log('SIGTERM received, shutting down gracefully');
+      server.close(() => {
+        console.log('Process terminated');
+        process.exit(0);
+      });
+    });
+
+    process.on('SIGINT', () => {
+      console.log('SIGINT received, shutting down gracefully');
+      server.close(() => {
+        console.log('Process terminated');
+        process.exit(0);
+      });
+    });
+
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
+};
+
+if (require.main === module) {
+  startServer();
+}
+
+module.exports = { app, startServer };

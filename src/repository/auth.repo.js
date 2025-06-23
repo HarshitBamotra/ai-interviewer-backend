@@ -1,5 +1,5 @@
 const User = require("../models/user.model");
-const { InternalServerError, NotFound } = require("../errors");
+const { InternalServerError, NotFound, BadRequest } = require("../errors");
 const jwt = require('jsonwebtoken');
 
 
