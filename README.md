@@ -2,9 +2,9 @@
 
 Access frontend code at: https://github.com/HarshitBamotra/ai-interviewer-frontend
 
-Backend Deployment: https://streamsync-backend-54oq.onrender.com
+Backend Deployment: https://ai-interviewer-backend-1.onrender.com
 
-Frontend Deployment: https://stream-sync-frontend.onrender.com
+Frontend Deployment: https://ai-interviewer-frontend-xw2c.onrender.com
 
 ## Overview
 
