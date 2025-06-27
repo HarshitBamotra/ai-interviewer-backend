@@ -1,11 +1,11 @@
 const BadRequest = require("./badRequest.error");
 const BaseError = require("./base.error");
 const InternalServerError = require("./internalServerError");
-const NotFound = require("./notFound.error");
+const NotFoundError = require("./notFound.error");
 
 module.exports = {
     BaseError: BaseError,
-    NotFound: NotFound,
+    NotFoundError: NotFoundError,
     BadRequest: BadRequest,
     InternalServerError: InternalServerError
 }
