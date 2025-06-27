@@ -326,4 +326,16 @@ npx jest --coverage
 npx jest --watch
 ```
 
-![Test Coverage Image](https://github.com/HarshitBamotra/ai-interviewer-backend/blob/master/test-coverage.png?raw=true)
+![Test Coverage Image](https://github.com/HarshitBamotra/ai-interviewer-backend/blob/master/github-images/test-coverage.png?raw=true)
+
+---
+## CI/CD Integration
+
+### Keploy Dashboard
+![Keploy Dashboard](https://github.com/HarshitBamotra/ai-interviewer-backend/blob/master/github-images/keploy-dashboard.png?raw=true)
+
+### GitHub Actions
+![Actions 1](https://github.com/HarshitBamotra/ai-interviewer-backend/blob/master/github-images/github-actions1.png?raw=true)
+
+![Actions 2](https://github.com/HarshitBamotra/ai-interviewer-backend/blob/master/github-images/github-actions2.png?raw=true)
+
