@@ -11,6 +11,15 @@ async function register(req, res, next) {
             profileImage: req.file ? req.file.path : null
         }
         
+        if(!req.body.username || !req.body.email || !req.body.password){
+            return res.status(StatusCodes.BAD_REQUEST).json({
+                success: false,
+                message: "Missing fields",
+                err: {},
+                data: null
+            });
+        }
+
         const result = await authService.register(userData);
         if (result.userExists) {
             return res.status(StatusCodes.BAD_REQUEST).json({
@@ -38,6 +47,16 @@ async function register(req, res, next) {
 
 async function login(req, res, next) {
     try {
+
+        if(!req.body.email || !req.body.password){
+            return res.status(StatusCodes.BAD_REQUEST).json({
+                success: false,
+                message: "Missing fields",
+                err: {},
+                data: null
+            });
+        }
+
         const result = await authService.login(req.body);
 
         if (result.userNotFound) {

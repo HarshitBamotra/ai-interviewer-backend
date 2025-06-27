@@ -13,9 +13,16 @@ async function createCharacter(req, res, next){
 
         const characterData = {
             ...req.body,
-            imageUrl: req.file ? req.file.path : null
         };
         
+        if(!req.body.companyName || !req.body.interviewRound || !req.body.additionalInformation){
+            return res.status(StatusCodes.BAD_REQUEST).json({
+                success: false,
+                message: "Missing fields",
+                err: {},
+                data: null
+            });
+        }
         const character = await characterService.createCharacter(characterData, req.user._id);
         return res.status(StatusCodes.CREATED).json({
             success: true,
@@ -92,6 +99,14 @@ async function getChatHistory(req, res, next){
 
 async function sendMessage(req, res, next){
     try{
+        if(!req.body.message){
+            return res.status(StatusCodes.BAD_REQUEST).json({
+                success: false,
+                message: "Missing fields",
+                err: {},
+                data: null
+            });
+        }
         const response = await characterService.sendMessage(req.body.message, req.params.characterId, req.user._id);
         return res.status(StatusCodes.OK).json({
             success: true,
