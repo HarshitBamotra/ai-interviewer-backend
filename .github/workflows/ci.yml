@@ -18,16 +18,29 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '22'
     
     - name: Install Dependencies
       run: npm install
-    
+
     - name: Start Application
       run: |
         npm start &
         sleep 10  # Wait for app to start
-        # Or use: node src/app.js &
+        
+      env:
+        PORT: 3000
+        DB_URL: ${{ secrets.DB_URL }}
+
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        AI_MODEL: ${{ secrets.AI_MODEL }}
+
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+
+        CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+        CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+        CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
     
     - name: Install Keploy CLI
       run: |
@@ -36,6 +49,6 @@ jobs:
     - name: Run Keploy Test Suite
       run: |
         export KEPLOY_API_KEY=${{ secrets.KEPLOY_API_KEY }}
-        keploy test-suite --app=8210772c-695d-4be6-9f37-9d3f61090aaa --base-path https://ai-interviewer-backend-1.onrender.com/ --cloud
+        keploy test-suite --app=8210772c-695d-4be6-9f37-9d3f61090aaa --base-path http://localhost:3000 --cloud
       env:
         KEPLOY_API_KEY: ${{ secrets.KEPLOY_API_KEY }}

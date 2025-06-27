@@ -15,7 +15,7 @@ async function createCharacter(req, res, next){
             ...req.body,
         };
         
-        if(!req.body.companyName || !req.body.interviewRound || !req.body.additionalInformation){
+        if(!req.body.companyName || !req.body.interviewRound){
             return res.status(StatusCodes.BAD_REQUEST).json({
                 success: false,
                 message: "Missing fields",
