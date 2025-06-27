@@ -2,7 +2,7 @@ name: Keploy API Tests
 
 on:
   push:
-    branches: [ master, develop ]
+    branches: [ master]
   pull_request:
     branches: [ master ]
 
@@ -14,7 +14,6 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
     
-    # Start your application (adjust as needed)
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
@@ -26,8 +25,8 @@ jobs:
     - name: Start Application
       run: |
         npm start &
-        sleep 10  # Wait for app to start
-        
+        sleep 10
+
       env:
         PORT: 3000
         DB_URL: ${{ secrets.DB_URL }}
