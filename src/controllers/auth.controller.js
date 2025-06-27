@@ -60,7 +60,7 @@ async function login(req, res, next) {
         const result = await authService.login(req.body);
 
         if (result.userNotFound) {
-            return res.status(StatusCodes.BAD_REQUEST).json({
+            return res.status(StatusCodes.UNAUTHORIZED).json({
                 success: false,
                 message: "User not found. Please register first.",
                 err: {},
@@ -69,7 +69,7 @@ async function login(req, res, next) {
         }
 
         if (result.invalidPassword) {
-            return res.status(StatusCodes.BAD_REQUEST).json({
+            return res.status(StatusCodes.UNAUTHORIZED).json({
                 success: false,
                 message: "Invalid credentials.",
                 err: {},
