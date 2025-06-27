@@ -1,0 +1,41 @@
+name: Keploy API Tests
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+    
+    # Start your application (adjust as needed)
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    - name: Install Dependencies
+      run: npm install
+    
+    - name: Start Application
+      run: |
+        npm start &
+        sleep 10  # Wait for app to start
+        # Or use: node src/app.js &
+    
+    - name: Install Keploy CLI
+      run: |
+        curl --silent -L https://keploy.io/ent/install.sh | bash
+    
+    - name: Run Keploy Test Suite
+      run: |
+        export KEPLOY_API_KEY=${{ secrets.KEPLOY_API_KEY }}
+        keploy test-suite --app=8210772c-695d-4be6-9f37-9d3f61090aaa --base-path https://ai-interviewer-backend-1.onrender.com/ --cloud
+      env:
+        KEPLOY_API_KEY: ${{ secrets.KEPLOY_API_KEY }}
